@@ -1,18 +1,23 @@
 var issuesContainerEl = document.querySelector("#issues-container");
+var limitWarningEl = document.querySelector("#limit-warning");
 
 function getRepoIssues(repo){
     var apiUrl = "https://api.github.com/repos/"+ repo +"/issues?direction=asc"
     fetch(apiUrl)
     .then(function(response){
         if(response.ok){
-            return response.json();
+            response.json().then(function(data){
+                displayIssues(data);
+                
+                //check if the api has paginated data
+                if(response.headers.get("Link")){
+                    displayWarning(repo);
+                }
+            });
         }
         else{
             alert("Error: " + response.statusText);
         }
-    })
-    .then(function(data){
-        displayIssues(data);
     })
     .catch(function(error){
         alert("Cannot connect to GitHub.");
@@ -56,4 +61,17 @@ function displayIssues(issues){
     }
 }
 
-getRepoIssues("brentsa/Coding-Quiz");
+function displayWarning(repo){
+    //Change the limit warning text
+    limitWarningEl.textContent = "To see more than 30 issues, visit ";
+
+    //Create a link to the repo issues website
+    var repoLink = document.createElement("a");
+    repoLink.textContent = "see more Issues on Github.com";
+    repoLink.setAttribute("href", "https://github.com/"+ repo +"/issues");
+    repoLink.setAttribute("target", "_blank");
+
+    limitWarningEl.appendChild(repoLink);
+}
+
+getRepoIssues("facebook/react");

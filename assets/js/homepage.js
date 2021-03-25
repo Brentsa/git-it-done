@@ -20,7 +20,8 @@ function handleFormSubmit(event){
 function getUserRepos(user){
     var apiUrl = "https://api.github.com/users/" + user + "/repos";
 
-    fetch(apiUrl).then(function(response) {
+    fetch(apiUrl)
+    .then(function(response) {
         if (response.ok) {
           response.json().then(function(data) {
             displayRepos(data, user);
@@ -29,7 +30,8 @@ function getUserRepos(user){
         else {
             alert("Error: " + response.status);
         }
-    }).catch(function(error){
+    })
+    .catch(function(error){
         alert("Unable to connect to GitHub");
     });
 }

@@ -53,8 +53,9 @@ function displayRepos(repos, searchTerm){
         var repoName = repos[0].owner.login + "/" + repos[i].name;
 
         //create container for the repo
-        var repoEl = document.createElement("div");
+        var repoEl = document.createElement("a");
         repoEl.className = "list-item flex-row justify-space-between align-center";
+        repoEl.setAttribute("href", "./single-repo.html?repo=" + repoName);
 
         //create span for the repo title
         var titleEl = document.createElement("span");
